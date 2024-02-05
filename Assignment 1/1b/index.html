@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4447df;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #4447df;
+        }
+
+        @media screen and (max-width: 600px) {
+            .container {
+                margin: 20px;
+                padding: 15px;
+            }
+
+            input,
+            select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <form id="registrationForm" method="POST">
+            <label for="firstName">First Name:</label>
+            <input type="text" name="firstName" id="firstName">
+
+            <label for="lastName">Last Name:</label>
+            <input type="text" name="lastName" id="lastName">
+
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email">
+
+            <select class="select" id="gender">
+                <option value="" disabled selected>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+            </select>
+
+            <select class="select" id="branch">
+                <option value="" disabled selected>Select Branch</option>
+                <option value="it">IT</option>
+                <option value="cs">CS</option>
+                <option value="e&tc">E&TC</option>
+            </select>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const email = document.getElementById("email").value;
+            const gender = document.getElementById("gender").value;
+            const branch = document.getElementById("branch").value;
+
+            const userData = { firstName, lastName, email, gender, branch };
+            localStorage.setItem("userData", JSON.stringify(userData));
+            window.location.href = "showUserData.html"; // Redirect to the second HTML file
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display user data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        span {
+            font-weight: bold;
+            color: #555;
+            display: inline-block;
+            margin: 5px 0;
+        }
+
+        #firstName,
+        #lastName,
+        #email,
+        #gender,
+        #branch {
+            color: #007bff; /* Blue color for displayed data */
+        }
+
+        @media screen and (max-width: 600px) {
+            span {
+                margin: 8px 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>User Data</h1>
+    <span>First Name: </span> <span id="firstName"></span><br>
+    <span>Last Name: </span> <span id="lastName"></span><br>
+    <span>Email: </span> <span id="email"></span><br>
+    <span>Gender: </span> <span id="gender"></span><br>
+    <span>Branch: </span> <span id="branch"></span><br>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const userDataString = localStorage.getItem("userData");
+            if (userDataString) {
+                const userData = JSON.parse(userDataString);
+                document.getElementById("firstName").textContent = userData.firstName;
+                document.getElementById("lastName").textContent = userData.lastName;
+                document.getElementById("email").textContent = userData.email;
+                document.getElementById("gender").textContent = userData.gender;
+                document.getElementById("branch").textContent = userData.branch;
+            }
+        });
+    </script>
+</body>
+
+</html>
