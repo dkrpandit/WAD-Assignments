@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+</head>
+
+<body>
+    <form id="registrationForm">
+
+        <input type="text" placeholder="Enter name" id="name"> <br><br>
+        <input type="number" id="age" placeholder="age"><br><br>
+        <input type="button" value="submit" onclick="listData()">
+    </form>
+</body>
+<script>
+    const listData = () => {
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const user = {
+            name: name,
+            age: age
+        };
+        // Save user data to local storage
+        let usersArray = JSON.parse(localStorage.getItem("users")) || [];
+        usersArray.push(user);
+        localStorage.setItem("users", JSON.stringify(usersArray));
+        window.alert("user data is  listed")
+        window.location.href = "userList.html";
+    }
+</script>
+
+</html>
