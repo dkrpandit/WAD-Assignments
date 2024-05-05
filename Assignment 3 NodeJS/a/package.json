@@ -1,0 +1,14 @@
+{
+  "name": "pandit",
+  "version": "1.0.0",
+  "description": "a. Create a Node.JS Application which serves a static website.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm start"
+  },
+  "author": "pandit",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
