@@ -5,7 +5,7 @@ const register = async (req, res) => {
     try {
         const data = req.body;
         console.log(data);
-        
+
         const existingUser = await user.findOne({
             $or: [{ email: data.email }, { irnNumber: data.irnNumber }]
         });
@@ -76,7 +76,7 @@ const getUsers = async (req, res) => {
         if (!response) {
             return res.status(404).json({ message: "errors to load users" })
         }
-        return res.status(200).json( response )
+        return res.status(200).json(response)
     } catch (error) {
         console.log(`errors ${error}`);
     }
@@ -87,7 +87,7 @@ const getUsers = async (req, res) => {
 // Delete user
 const deleteUser = async (req, res) => {
     try {
-        const { email, irnNumber } = req.body; 
+        const { email, irnNumber } = req.body;
 
         // Check if either email or irnNumber is provided
         if (!email && !irnNumber) {
@@ -113,4 +113,37 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = { register, login, getUsers, deleteUser };
+const updateUser = async (req, res) => {
+    const { email, irnNumber } = req.body;
+
+    // Check if either email or irnNumber is provided
+    if (!email && !irnNumber) {
+        return res.status(400).json({ message: "Email or IRN number is required" });
+    }
+
+    try {
+        // Find the user by email or irnNumber
+        const existingUser = await userModel.findOne({
+            $or: [{ email }, { irnNumber }]
+        });
+
+        if (!existingUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Update the name if provided in the request body
+        if (req.body.name) {
+            existingUser.name = req.body.name;
+            await existingUser.save();
+            return res.status(200).json({ message: "Name updated successfully" });
+        } else {
+            return res.status(400).json({ message: "Name field is required for update" });
+        }
+    } catch (error) {
+        console.error("Error updating name:", error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
+module.exports = { register, login, getUsers, deleteUser ,updateUser};
