@@ -1,0 +1,6 @@
+FROM node:alpha
+COPY ./partb
+CMD node /partb/index.js
+
+Command to build
+docker build -t partb .
