@@ -1,13 +1,87 @@
-<!-- Create a responsive web page which shows the ecommerce/college/exam admin dashboard
-with sidebar and statistics in cards using HTML, CSS and Bootstrap. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #sidebar {
+            background-color: #333;
+            color: #fff;
+            height: 100vh;
+        }
+        #sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        #sidebar ul li {
+            padding: 10px;
+            border-bottom: 1px solid #555;
+        }
+        #sidebar ul li a {
+            color: #fff;
+            text-decoration: none;
+        }
+        #sidebar ul li:hover {
+            background-color: #555;
+        }
+        #content {
+            padding: 20px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3" id="sidebar">
+                <h2>Dashboard</h2>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Orders</a></li>
+                    <li><a href="#">Customers</a></li>
+                </ul>
+            </div>
+            <!-- Content -->
+            <div class="col-md-9" id="content">
+                <h2>Statistics</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Orders</h5>
+                                <p class="card-text">100</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Products</h5>
+                                <p class="card-text">50</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Customers</h5>
+                                <p class="card-text">200</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+
