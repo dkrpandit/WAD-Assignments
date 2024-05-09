@@ -1,0 +1,269 @@
+Q.
+Write an application using HiveQL for Student information system which
+will include
+A. Creating, Dropping, and altering Database tables.
+Table 1: Stu ID, Stu Name, Stu branch
+Table 2: Stu ID, Subject, Marks
+B. Load table with data
+C. Join tables with Hive(Table 1 and Table 2)
+D. Find list of students having marks greater than 80.
+
+
+
+-- A. Creating Database tables
+CREATE DATABASE IF NOT EXISTS student_info_system;
+
+-- Table 1: Student Information
+CREATE TABLE IF NOT EXISTS student_info_system.student_info (
+    StuID INT,
+    StuName STRING,
+    StuBranch STRING
+);
+
+-- Table 2: Student Marks
+CREATE TABLE IF NOT EXISTS student_info_system.student_marks (
+    StuID INT,
+    Subject STRING,
+    Marks INT
+);
+
+-- B. Load tables with data
+-- Loading data into student_info table
+LOAD DATA LOCAL INPATH '/path/to/student_info.csv' INTO TABLE student_info_system.student_info;
+
+-- Loading data into student_marks table
+LOAD DATA LOCAL INPATH '/path/to/student_marks.csv' INTO TABLE student_info_system.student_marks;
+
+-- C. Join tables with Hive
+-- Joining tables on StuID to get student information along with their marks
+SELECT si.StuID, si.StuName, si.StuBranch, sm.Subject, sm.Marks
+FROM student_info_system.student_info si
+JOIN student_info_system.student_marks sm
+ON si.StuID = sm.StuID;
+
+-- D. Find list of students having marks greater than 80
+SELECT si.StuID, si.StuName, si.StuBranch, sm.Subject, sm.Marks
+FROM student_info_system.student_info si
+JOIN student_info_system.student_marks sm
+ON si.StuID = sm.StuID
+WHERE sm.Marks > 80;
+
+-----------------------------------------------------------------------------------
+Q.
+Write an application using HiveQL which will include 
+A. Creating, Dropping, and altering Database tables. 
+B. Load table with data 
+C. Creating an external Hive table.
+
+
+
+-- A. Creating, Dropping, and Altering Database tables
+-- Create Database if not exists
+CREATE DATABASE IF NOT EXISTS my_database;
+
+-- Use the created database
+USE my_database;
+
+-- Create Table 1: Student Information
+CREATE TABLE IF NOT EXISTS student_info (
+    StuID INT,
+    StuName STRING,
+    StuBranch STRING
+);
+
+-- Drop Table 1 if it exists
+DROP TABLE IF EXISTS student_info;
+
+-- Recreate Table 1 with altered schema
+CREATE TABLE IF NOT EXISTS student_info (
+    StuID INT,
+    StuName STRING,
+    StuBranch STRING,
+    StuDOB DATE  -- Adding a new column for Date of Birth
+);
+
+-- B. Load table with data
+-- Load data into student_info table from HDFS
+LOAD DATA INPATH '/path/to/student_info_data.csv' OVERWRITE INTO TABLE student_info;
+
+-- C. Creating an external Hive table
+-- Create External Table for Student Marks
+CREATE EXTERNAL TABLE IF NOT EXISTS student_marks (
+    StuID INT,
+    Subject STRING,
+    Marks INT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/hive/warehouse/student_marks';
+
+-- Load data into external table from HDFS
+LOAD DATA INPATH '/path/to/student_marks_data.csv' OVERWRITE INTO TABLE student_marks;
+
+----------------------------------------------------------------------------------------------
+Q.Write an application using HiveQL which will include 
+A. Create a Table 
+B. Load table with data 
+C. insert new values and field in the table 
+D. Join tables with Hive
+
+-- A. Create a Table
+CREATE TABLE IF NOT EXISTS employee (
+    emp_id INT,
+    emp_name STRING,
+    emp_department STRING
+);
+
+-- B. Load table with data
+-- Assuming data is in CSV format and stored in HDFS
+LOAD DATA INPATH '/path/to/employee_data.csv' OVERWRITE INTO TABLE employee;
+
+-- C. Insert new values and field in the table
+-- Inserting a new record into the employee table
+INSERT INTO TABLE employee VALUES (101, 'John Doe', 'Marketing');
+
+-- Adding a new column to the employee table
+ALTER TABLE employee ADD COLUMN emp_salary DOUBLE;
+
+-- Updating the newly added column for all employees
+UPDATE employee SET emp_salary = 50000 WHERE emp_id = 101;
+
+-- D. Join tables with Hive
+-- Assuming there's another table called department with department information
+CREATE TABLE IF NOT EXISTS department (
+    dept_id INT,
+    dept_name STRING
+);
+
+-- Loading data into department table
+LOAD DATA INPATH '/path/to/department_data.csv' OVERWRITE INTO TABLE department;
+
+-- Joining employee and department tables to get employee details along with department names
+SELECT e.emp_id, e.emp_name, e.emp_department, d.dept_name
+FROM employee e
+JOIN department d
+ON e.emp_department = d.dept_name;
+
+------------------------------------------------------------------------------------------
+Write an application using HiveQL for Employee information system which
+will include
+A. Creating, Dropping, and altering Database tables.
+Table 1:Emp ID, Emp Name, Emp Designation, Dept.
+Table 2:Emp ID, Salary, Leaves_Taken
+B. Creating an external Hive table.
+C. Load table with data, insert new values and field in the table, Join tables
+with Hive(Table 1 and Table 2)
+
+-- A. Creating, Dropping, and altering Database tables
+-- Create Database if not exists
+CREATE DATABASE IF NOT EXISTS employee_info_system;
+
+-- Use the created database
+USE employee_info_system;
+
+-- Table 1: Employee Information
+CREATE TABLE IF NOT EXISTS employee_info (
+    EmpID INT,
+    EmpName STRING,
+    EmpDesignation STRING,
+    Dept STRING
+);
+
+-- Table 2: Employee Salary and Leave Information
+CREATE TABLE IF NOT EXISTS employee_salary_leave (
+    EmpID INT,
+    Salary DOUBLE,
+    LeavesTaken INT
+);
+
+-- B. Creating an external Hive table
+-- Create External Table for Employee Performance
+CREATE EXTERNAL TABLE IF NOT EXISTS employee_performance (
+    EmpID INT,
+    PerformanceRating DOUBLE
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+LOCATION '/user/hive/warehouse/employee_performance';
+
+-- C. Load table with data, insert new values and field in the table, Join tables with Hive
+-- Load data into employee_info table from HDFS
+LOAD DATA INPATH '/path/to/employee_info_data.csv' OVERWRITE INTO TABLE employee_info;
+
+-- Load data into employee_salary_leave table from HDFS
+LOAD DATA INPATH '/path/to/employee_salary_leave_data.csv' OVERWRITE INTO TABLE employee_salary_leave;
+
+-- Inserting new values and field into employee_info table
+INSERT INTO TABLE employee_info VALUES (101, 'John Doe', 'Manager', 'Marketing');
+
+-- Adding a new column to employee_info table
+ALTER TABLE employee_info ADD COLUMN EmpDOB DATE;
+
+-- Updating the newly added column for all employees
+UPDATE employee_info SET EmpDOB = '1990-05-15' WHERE EmpID = 101;
+
+-- Joining tables employee_info and employee_salary_leave to get employee details along with salary and leaves taken
+SELECT e.EmpID, e.EmpName, e.EmpDesignation, e.Dept, s.Salary, s.LeavesTaken
+FROM employee_info e
+JOIN employee_salary_leave s
+ON e.EmpID = s.EmpID;
+
+
+
+Ensure to replace /path/to/employee_info_data.csv and /path/to/employee_salary_leave_data.csv with the actual paths to your data files. Adjust the paths accordingly if your data is in a different format or stored in a different location.
+
+This script creates tables for employee information and salary details, creates an external table for employee performance, loads data into tables, inserts new values and fields, and joins tables in HiveQL for the Employee Information System application.
+-----------------------------------------------------------------------------------------------
+Q.
+Write an application using HiveQL for flight information system which will
+include
+A. Create a Table
+B. Load table with data
+C. Create index on Flight Information Table
+D. Find the average departure delay per day in 2008
+
+-- A. Create a Table
+CREATE TABLE IF NOT EXISTS flight_info (
+    Year INT,
+    Month INT,
+    DayofMonth INT,
+    DayOfWeek INT,
+    DepTime INT,
+    CRSDepTime INT,
+    ArrTime INT,
+    CRSArrTime INT,
+    UniqueCarrier STRING,
+    FlightNum INT,
+    TailNum STRING,
+    ActualElapsedTime INT,
+    CRSElapsedTime INT,
+    AirTime INT,
+    ArrDelay INT,
+    DepDelay INT,
+    Origin STRING,
+    Dest STRING,
+    Distance INT,
+    TaxiIn INT,
+    TaxiOut INT,
+    Cancelled INT,
+    CancellationCode STRING,
+    Diverted INT,
+    CarrierDelay INT,
+    WeatherDelay INT,
+    NASDelay INT,
+    SecurityDelay INT,
+    LateAircraftDelay INT
+);
+
+-- B. Load table with data
+-- Assuming data is in CSV format and stored in HDFS
+LOAD DATA INPATH '/path/to/flight_data.csv' OVERWRITE INTO TABLE flight_info;
+
+-- C. Create index on Flight Information Table
+CREATE INDEX idx_dep_delay ON TABLE flight_info(DepDelay) AS 'BITMAP';
+
+-- D. Find the average departure delay per day in 2008
+SELECT Year, Month, DayofMonth, AVG(DepDelay) AS AvgDepDelay
+FROM flight_info
+WHERE Year = 2008
+GROUP BY Year, Month, DayofMonth;
