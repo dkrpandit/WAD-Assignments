@@ -267,3 +267,84 @@ SELECT Year, Month, DayofMonth, AVG(DepDelay) AS AvgDepDelay
 FROM flight_info
 WHERE Year = 2008
 GROUP BY Year, Month, DayofMonth;
+
+
+
+--------------------------------------siddhesh----------------------------
+create database demo ;
+
+use demo ;
+
+create table student(name string, rollno int, dept string)
+row format delimited
+fields terminated by ',';
+
+load data local inpath 'filepath' into table student ;
+
+drop table student ;
+
+select * from student ;
+
+describe student ;
+
+describe extended student ;
+
+hdfs dfs -mkdir /hivedata
+
+hdfs dfs -put filepath /hivedata
+
+load data inpath '/hivedata/file' into table student1 ;
+
+create external table student3(name string, rollno int, dept string)
+row format delimited
+fields terminated by ',';
+location '/hivedata';
+
+create table student4(name string, rollno int, per float)
+partitioned by (state string, city string)
+row format delimited
+fields terminated by ',';
+
+load data inpath 'filepath' into table student4
+partition(state="maharashtra", city="gujarat");
+
+select * from student4 where state="maharashtra";
+
+set hive.exec.dynamic.partition=true ;
+
+set hive.exec.dynamic.partition.mode=nonrestrict;
+
+create table student4(name string, rollno int, per float, state string, city string)
+row format delimited
+fields terminated by ',';
+
+create table stud_part(name string, rollno int, per float)
+partitioned by (state string, city string)
+row format delimited
+fields terminated by ',';
+
+insert into stud_part
+partition(state,city)
+select name,rollno,per
+,state,
+city
+from student4;
+
+select /*+ MAPJOIN(student4) */
+student4.name, student4.rollno, student4.per
+from student3
+join student4
+on student3.name = student4.name;
+
+SELECT <columns>
+FROM table1
+JOIN table2 ON table1.column_name = table2.column_name;
+
+-- Example 1: Finding the average of a column for the entire dataset
+SELECT AVG(salary) AS average_salary
+FROM employees;
+
+-- Example 2: Finding the average salary for each department
+SELECT department, AVG(salary) AS average_salary
+FROM employees
+GROUP BY department;
